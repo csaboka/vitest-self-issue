@@ -13,8 +13,13 @@ describe('Hello World worker', () => {
 		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
 	});
 
-	it('responds with Hello World! (integration style)', async () => {
-		const response = await SELF.fetch(request, env, ctx);
-		expect(await response.text()).toMatchInlineSnapshot(`"Hello World!"`);
-	});
+	for (let i = 0; i < 5; i++) {
+		it(i + ' responds with Hello World! (integration style)', async function() {
+			const request = new Request('http://example.com');
+			const ctx = createExecutionContext();
+			const response = await SELF.fetch(request, env, ctx);
+			expect(await response.text()).toBe("Hello World!");
+			await waitOnExecutionContext(ctx);
+		});
+	};
 });

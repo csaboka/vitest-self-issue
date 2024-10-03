@@ -10,6 +10,12 @@
 
 export default {
 	async fetch(request, env, ctx) {
+		ctx.waitUntil(longRunning());
 		return new Response('Hello World!');
 	},
 };
+
+async function longRunning() {
+	await new Promise(resolve => setTimeout(resolve, 1000));
+	console.log("done long-running code");
+}
